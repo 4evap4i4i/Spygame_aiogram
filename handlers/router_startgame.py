@@ -44,9 +44,9 @@ async def startgame(message: Message, state: FSMContext):
                 print(player)
                 await players_tosend.append(player)
 
-            except Exception:
+            except Exception as e:
                 player_bad = player["name"]
-                await message.answer(f"У игрока {player_bad} бот не запущен, игры не будет.")
+                await message.answer(f"У игрока {player_bad} бот не запущен, игры не будет.{e}")
 
                 await state.set_state(Game.started)
 
