@@ -13,6 +13,7 @@ async def play(message: Message, state: FSMContext):
     player_name = player["name"]
 
     await state.set_state(Game.players)
+    await state.update_data(players=[player])
     await message.answer("Набор в игру начался!\n\n/getin - чтобы вступить в игру (нужно чтобы бот был активирован в личном чате).\n/startgame - чтобы начать игру.")
 
     await message.answer(f"{player_name} - хост игры!\nТолько он может её начать и закончить!")
