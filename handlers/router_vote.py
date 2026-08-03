@@ -1,9 +1,9 @@
 from aiogram import Router
-from aiogram.types import Message
 from aiogram.filters import Command, CommandObject
 from aiogram.fsm.context import FSMContext
+from aiogram.types import Message
+
 from states import Game
-from config import Bot
 
 router_vote = Router()
 

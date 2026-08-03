@@ -1,11 +1,11 @@
-from aiogram import Router
-from aiogram.types import Message
-from aiogram.filters import Command, CommandObject
-from aiogram.fsm.context import FSMContext
-from states import Game
-from config import Bot
-from random import choice
 import asyncio
+
+from aiogram import Router
+from aiogram.filters import Command
+from aiogram.fsm.context import FSMContext
+from aiogram.types import Message
+
+from states import Game
 
 router_end = Router()
 
@@ -18,13 +18,11 @@ async def end(message: Message, state: FSMContext):
 
     if player_sender["is_started"] is True:
         player_high = data[0]
-        player_many = []
 
         for player in data:
-            if player_high["votes"] > player["votes"]:
+            if player_high["votes"] < player["votes"]:
                 player_high = player
-                print(player_high)
-            elif player_high["votes"] < player["votes"]:
+            elif player_high["votes"] > player["votes"]:
                 print(player_high)
 
         player_highscore_name = player_high["name"]
@@ -45,5 +43,3 @@ async def end(message: Message, state: FSMContext):
         await state.set_state(Game.started)
     else:
         await message.reply("Тебя нет в игре!")
-
-    return

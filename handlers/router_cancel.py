@@ -1,7 +1,8 @@
-from aiogram import Router, F
-from aiogram.types import Message
-from aiogram.filters import Command, CommandObject
+from aiogram import F, Router
+from aiogram.filters import Command
 from aiogram.fsm.context import FSMContext
+from aiogram.types import Message
+
 from states import Game
 
 router_cancel = Router()

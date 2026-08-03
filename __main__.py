@@ -1,8 +1,9 @@
+import asyncio
+
 from aiogram import Dispatcher
+
 from config import Bot
 from handlers import routers
-import asyncio
-import pathlib
 
 dp = Dispatcher()
 

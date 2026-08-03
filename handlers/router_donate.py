@@ -1,8 +1,9 @@
-from aiogram import Router, F
-from aiogram.types import Message, LabeledPrice
+from aiogram import F, Router
 from aiogram.filters import Command, CommandObject
-from aiogram.utils.keyboard import InlineKeyboardBuilder
+from aiogram.types import LabeledPrice, Message
 from aiogram.types.pre_checkout_query import PreCheckoutQuery
+from aiogram.utils.keyboard import InlineKeyboardBuilder
+
 from config import Bot
 
 router_donate = Router()
@@ -60,5 +61,5 @@ async def refund(message: Message, bot: Bot, command: CommandObject):
 
 @router_donate.message(F.successful_payment)
 async def refund_id(message: Message):
-    await message.answer(f"Спасибо большое за донат!\n\nВот команда, если захочешь их вернуть, просто скопируй и отправь сообщением:")
+    await message.answer("Спасибо большое за донат!\n\nВот команда, если захочешь их вернуть, просто скопируй и отправь сообщением:")
     await message.answer(f"/refund {message.successful_payment.telegram_payment_charge_id}")

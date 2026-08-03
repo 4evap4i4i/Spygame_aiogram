@@ -1,12 +1,13 @@
+from random import shuffle
+
+import asyncpg
 from aiogram import Router
-from aiogram.types import Message
 from aiogram.filters import Command
 from aiogram.fsm.context import FSMContext
+from aiogram.types import Message
+
+from config import Bot, db_url
 from states import Game
-from config import Bot
-from random import shuffle
-from config import db_url
-import asyncpg
 
 router_startgame = Router()
 
@@ -35,20 +36,25 @@ async def startgame(message: Message, state: FSMContext):
             player["role"] = row[0]
         
         data[-1]["role"] = "щпион"
+        players_tosend = []
 
         for player in data:
             try:
-                piska = player["role"]
-
-                await Bot.send_message(chat_id=player["id"], text=f"Твоя роль - {piska}")
+                players_tosend.append[player]
 
             except Exception:
                 player_bad = player["name"]
-                await message.answer(f"У игрока {player_bad} бот не запущен, он не будет участвовать в игре.")
+                await message.answer(f"У игрока {player_bad} бот не запущен, игры не будет.")
 
-                data.remove(player)
-                print(data)
-        
+                await state.set_state(Game.started)
+
+                return
+        for player in players_tosend:
+            piska = player["role"]
+            player_id = player["id"]
+            
+            await Bot.send_message(chat_id=player_id, text=f"Твоя роль - {piska}")
+
         if data:
             await state.set_state(Game.active)
             await state.update_data(active=data)

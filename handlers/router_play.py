@@ -1,7 +1,8 @@
 from aiogram import Router
-from aiogram.types import Message
 from aiogram.filters import Command
 from aiogram.fsm.context import FSMContext
+from aiogram.types import Message
+
 from states import Game
 
 router_play = Router()
@@ -12,8 +13,6 @@ async def play(message: Message, state: FSMContext):
     player_name = player["name"]
 
     await state.set_state(Game.players)
-    data = await state.update_data(players=[player])
-    piski = state.get_data
     await message.answer("Набор в игру начался!\n\n/getin - чтобы вступить в игру (нужно чтобы бот был активирован в личном чате).\n/startgame - чтобы начать игру.")
 
     await message.answer(f"{player_name} - хост игры!\nТолько он может её начать и закончить!")

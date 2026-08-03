@@ -1,9 +1,9 @@
-from aiogram import Router
-from states import Game
-from aiogram.types import Message
-from aiogram.filters import Command, CommandObject
-from config import db_url
 import asyncpg
+from aiogram import Router
+from aiogram.filters import Command, CommandObject
+from aiogram.types import Message
+
+from config import db_url
 
 router_add = Router()
 
@@ -29,7 +29,7 @@ async def add(message: Message, command: CommandObject):
 
             except Exception as e:
                 print(e)
-                await message.answer(f"Извини, таблица ролей переполнена.")
+                await message.answer("Извини, таблица ролей переполнена.")
         else:
             await message.reply("Напиши хоть что-то")     
     else:

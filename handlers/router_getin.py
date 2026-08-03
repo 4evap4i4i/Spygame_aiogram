@@ -1,7 +1,8 @@
 from aiogram import Router
-from aiogram.types import Message
 from aiogram.filters import Command
 from aiogram.fsm.context import FSMContext
+from aiogram.types import Message
+
 from states import Game
 
 router_getin = Router()
@@ -12,7 +13,7 @@ async def getin(message: Message, state: FSMContext):
 
     player = {"name": f"{message.from_user.full_name}", "id": f"{message.from_user.id}", "role": None, "votes": 0, "voted": False, "is_started": False}
     if player not in data:
-        player_fake = player
+        player_fake = player.copy()
         player_fake["is_started"] = True
         if player_fake not in data:
 
