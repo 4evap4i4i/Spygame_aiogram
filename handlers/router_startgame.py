@@ -25,6 +25,9 @@ async def startgame(message: Message, state: FSMContext):
             LIMIT 1
             OFFSET floor(random() * (SELECT COUNT(*) FROM roles))::int
         """)
+        if row is None:
+            await message.answer("Нет ролей в базе данных. Идите в личку и пишите свои роли.")
+            return
 
         shuffle(data)
 
