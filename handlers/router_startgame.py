@@ -42,7 +42,7 @@ async def startgame(message: Message, state: FSMContext):
             try:
                 await Bot.get_chat(player["id"])
                 print(player)
-                await players_tosend.append(player)
+                players_tosend.append(player)
 
             except Exception as e:
                 player_bad = player["name"]
