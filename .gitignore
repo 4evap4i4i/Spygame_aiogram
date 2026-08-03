@@ -1,3 +1,4 @@
 .env
 .venv
 roles.db
+__pycache__
