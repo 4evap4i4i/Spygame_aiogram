@@ -44,6 +44,6 @@ async def end(message: Message, state: FSMContext):
 
         await state.set_state(Game.started)
     else:
-        await message.reply("дабляяяяяяя как же ты заебал сын фермера вонючий иди нахуй ххватить руинить пидарасина ибучая ишак ипаный")
+        await message.reply("Тебя нет в игре!")
 
     return

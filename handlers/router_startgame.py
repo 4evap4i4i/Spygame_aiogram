@@ -5,7 +5,8 @@ from aiogram.fsm.context import FSMContext
 from states import Game
 from config import Bot
 from random import shuffle
-import aiosqlite
+from config import db_url
+import asyncpg
 
 router_startgame = Router()
 
@@ -16,22 +17,21 @@ async def startgame(message: Message, state: FSMContext):
     player_sender = next((player for player in data if player.get("name") == f"{message.from_user.full_name}"), None)
 
     if player_sender["is_started"] is True:
-        async with aiosqlite.connect("roles.db") as db:
-            async with db.execute("""
-            SELECT role 
-            FROM roles 
-            ORDER BY ID
+        db = await asyncpg.connect(db_url)
+        row = await db.fetchrow("""
+            SELECT role
+            FROM roles
+            ORDER BY id
             LIMIT 1
-            OFFSET abs(random() % (SELECT COUNT(*) FROM roles))
-            """) as cursor:
-                row = await cursor.fetchone()
+            OFFSET floor(random() * (SELECT COUNT(*) FROM roles))::int
+        """)
 
         shuffle(data)
 
         for player in data:
             player["role"] = row[0]
         
-        #data[-1]["role"] = "щпион"
+        data[-1]["role"] = "щпион"
 
         for player in data:
             try:
@@ -41,7 +41,7 @@ async def startgame(message: Message, state: FSMContext):
 
             except Exception:
                 player_bad = player["name"]
-                await message.answer(f"У игрока {player_bad} бот не запущен, он не будет участвовать в игре. Лох")
+                await message.answer(f"У игрока {player_bad} бот не запущен, он не будет участвовать в игре.")
 
                 data.remove(player)
                 print(data)
@@ -61,4 +61,4 @@ async def startgame(message: Message, state: FSMContext):
             await message.answer('Нет игроков, игра отменена!')
 
     else:
-        await message.reply("чонгук ебаный твоя мать свиноматка двухсот килограмовая тебя даже в игре нет хули ты пытаешься её начать чомом ипаный ишак")
+        await message.reply("Ты не в игре!")

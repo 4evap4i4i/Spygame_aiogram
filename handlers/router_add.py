@@ -2,7 +2,8 @@ from aiogram import Router
 from states import Game
 from aiogram.types import Message
 from aiogram.filters import Command, CommandObject
-import aiosqlite
+from config import db_url
+import asyncpg
 
 router_add = Router()
 
@@ -10,21 +11,26 @@ router_add = Router()
 async def add(message: Message, command: CommandObject):
     if message.chat.type == "private":
         if command.args is not None:
+            
+            try:
+                db = await asyncpg.connect(db_url)
+                row = await db.fetchrow("SELECT role FROM roles WHERE role = $1", command.args)
+                print(command.args)
 
-            async with aiosqlite.connect("roles.db") as db:
-                async with db.execute("SELECT role FROM roles WHERE role == ?;", (command.args,)) as cursor:
-                    row = await cursor.fetchone()
-
-                    if row is not None:
-                        await message.reply("Такая роль уже есть.")
+                if row is not None:
+                    await message.reply("Такая роль уже есть.")
+                    await db.close()
+                    print(row)
+                else:
+                    await db.execute("INSERT INTO roles (role) VALUES ($1)", command.args)
+                    await db.close()
                     
-                    else:
-                        async with aiosqlite.connect("roles.db") as db:
-                            await db.execute("INSERT INTO roles (role) VALUES (?)", (command.args,))
-                            await db.commit()
-                        
-                        await message.reply("Роль добавлена!")
+                    await message.reply("Роль добавлена!")
+
+            except Exception as e:
+                print(e)
+                await message.answer("Извини, таблица ролей переполнена.")
         else:
-            await message.reply("Напиши хоть чото")     
+            await message.reply("Напиши хоть что-то")     
     else:
         await message.reply("Добавлять роли можно только в личном чате!")

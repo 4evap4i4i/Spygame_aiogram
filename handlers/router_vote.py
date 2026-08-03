@@ -28,6 +28,6 @@ async def vote(message: Message, state: FSMContext, command: CommandObject):
         else:
             await message.reply("Ты уже отдал свой голос")
     else:
-        await message.answer("твоя мать сдохнет, тебя нет в игре нахуй ты это пишешь иди зажги у себя дома газовую плиту, закрой окна и ложись спать пжлст")
+        await message.answer("Ты не в игре!")
 
     await state.update_data(active=data)

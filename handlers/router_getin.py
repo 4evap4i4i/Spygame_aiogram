@@ -14,13 +14,13 @@ async def getin(message: Message, state: FSMContext):
     if player not in data:
         player_fake = player
         player_fake["is_started"] = True
-        if player not in data:
+        if player_fake not in data:
 
             data.append(player)
             player = player["name"]
             await state.update_data(players=data)
             await message.reply(f"{player} - добавлен в игру.")
         else:
-            await message.reply("Ты уже добавлен чомом ебаный я твою семью на вертеле жарил хуйло пидорское я твою семью над огнём повесил и отжарил и зажарил потом сожрал чмое бливое динаху")
+            await message.reply("Ты уже в игре!")
     else:
-        await message.reply("Ты уже добавлен чомом ебаный я твою семью на вертеле жарил хуйло пидорское я твою семью над огнём повесил и отжарил и зажарил потом сожрал чмое бливое динаху")
+        await message.reply("Ты уже в игре!")
