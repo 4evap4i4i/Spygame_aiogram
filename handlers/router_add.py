@@ -29,7 +29,7 @@ async def add(message: Message, command: CommandObject):
 
             except Exception as e:
                 print(e)
-                await message.answer("Извини, таблица ролей переполнена.")
+                await message.answer(f"Извини, таблица ролей переполнена.{e}")
         else:
             await message.reply("Напиши хоть что-то")     
     else:
