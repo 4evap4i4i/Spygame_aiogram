@@ -42,10 +42,10 @@ async def startgame(message: Message, state: FSMContext):
             try:
                 role = player["role"]
                 await Bot.send_message(chat_id=player["id"], text=f"Твоя роль - {role}")
-            except Exception as e:
+            except Exception:
                 player_bad = player["name"]
 
-                await message.answer(f"У игрока {player_bad} бот не запущен, игры не будет.{e}")
+                await message.answer(f"У игрока {player_bad} бот не запущен, игры не будет.")
                 await state.set_state(Game.started)
 
                 return
