@@ -58,7 +58,7 @@ async def startgame(message: Message, state: FSMContext):
 
                 await message.answer(f"У игроков {players}не активирован бот, они не будут участвовать в игре!")
             else:
-                await message.answer(f"У игрока {player_bad[0]} не активирован бот, он не будет участвовать в игре!")
+                await message.answer(f"У игрока {players_bad[0]} не активирован бот, он не будет участвовать в игре!")
 
         if data:
             await state.set_state(Game.active)
