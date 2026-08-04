@@ -5,6 +5,7 @@ from aiogram import Router
 from aiogram.filters import Command
 from aiogram.fsm.context import FSMContext
 from aiogram.types import Message
+from aiogram.exceptions import TelegramForbiddenError
 
 from config import Bot, db_url
 from states import Game
@@ -44,7 +45,7 @@ async def startgame(message: Message, state: FSMContext):
                 print(player)
                 players_tosend.append(player)
 
-            except Exception as e:
+            except TelegramForbiddenError as e:
                 print(e)
                 player_bad = player["name"]
                 await message.answer(f"У игрока {player_bad} бот не запущен, игры не будет.{e}")
