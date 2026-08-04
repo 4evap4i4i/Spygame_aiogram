@@ -2,10 +2,10 @@ from random import shuffle
 
 import asyncpg
 from aiogram import Router
+from aiogram.exceptions import TelegramForbiddenError
 from aiogram.filters import Command
 from aiogram.fsm.context import FSMContext
 from aiogram.types import Message
-from aiogram.exceptions import TelegramForbiddenError
 
 from config import Bot, db_url
 from states import Game
@@ -37,26 +37,18 @@ async def startgame(message: Message, state: FSMContext):
             player["role"] = row[0]
         
         data[-1]["role"] = "щпион"
-        players_tosend = []
 
         for player in data:
             try:
-                await Bot.get_chat(player["id"])
-                print(player)
-                players_tosend.append(player)
-
-            except TelegramForbiddenError as e:
-                print(e)
+                role = player["role"]
+                await Bot.send_message(chat_id=player["id"], text=f"Твоя роль - {role}")
+            except Exception as e:
                 player_bad = player["name"]
-                await message.answer(f"У игрока {player_bad} бот не запущен, игры не будет.{e}")
 
+                await message.answer(f"У игрока {player_bad} бот не запущен, игры не будет.{e}")
                 await state.set_state(Game.started)
 
                 return
-        
-        for player in players_tosend:
-            role = player["role"]
-            await Bot.send_message(chat_id=player["id"], text=f"Твоя роль - {role}")
 
         if data:
             await state.set_state(Game.active)
