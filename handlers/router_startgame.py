@@ -37,17 +37,28 @@ async def startgame(message: Message, state: FSMContext):
         
         data[-1]["role"] = "щпион"
 
+        players_bad = []
+
         for player in data:
             try:
+
                 role = player["role"]
+
                 await Bot.send_message(chat_id=player["id"], text=f"Твоя роль - {role}")
-            except Exception as e:
-                player_bad = player["name"]
 
-                await message.answer(f"У игрока {player_bad} бот не запущен, игры не будет.{e}")
-                await state.set_state(Game.started)
+            except Exception:
 
-                return
+                players_bad.append(player["name"])
+
+        if players_bad:
+            if len(players_bad) > 1:
+                players = ""
+                for player_bad in players_bad:
+                    players += f"{player_bad} "
+
+                await message.answer(f"У игроков {players}не активирован бот, они не будут участвовать в игре!")
+            else:
+                await message.answer(f"У игрока {player_bad[0]} не активирован бот, он не будет участвовать в игре!")
 
         if data:
             await state.set_state(Game.active)
