@@ -2,7 +2,6 @@ from random import shuffle
 
 import asyncpg
 from aiogram import Router
-from aiogram.exceptions import TelegramForbiddenError
 from aiogram.filters import Command
 from aiogram.fsm.context import FSMContext
 from aiogram.types import Message
