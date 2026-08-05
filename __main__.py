@@ -1,11 +1,12 @@
 import asyncio
 
 from aiogram import Dispatcher
+from aiogram.fsm.strategy import FSMStrategy
 
 from config import Bot
 from handlers import routers
 
-dp = Dispatcher()
+dp = Dispatcher(fsm_strategy=FSMStrategy.CHAT)
 
 async def main():
     for r in routers:
