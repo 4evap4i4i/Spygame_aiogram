@@ -6,5 +6,5 @@ from dotenv import load_dotenv
 load_dotenv()
 Bot = Bot(token=os.getenv("TOKEN"))
 db_url = os.getenv("NEON")
-webhoook = os.getenv("WEBHOOk")
+webhook = os.getenv("WEBHOOk")
 render_url = os.getenv("RENDER_EXTERNAL_URL")
