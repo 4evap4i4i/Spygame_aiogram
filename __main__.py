@@ -1,29 +1,22 @@
-import asyncio
 import os
 
 from aiogram import Dispatcher
-from aiogram.fsm.strategy import FSMStrategy
+from aiogram.webhook.aiohttp_server import SimpleRequestHandler, setup_application
 from aiohttp import web
 
-from config import Bot
+from config import Bot, render_url, webhook
 from handlers import routers
 
-dp = Dispatcher(fsm_strategy=FSMStrategy.CHAT)
+dp = Dispatcher()
+for r in routers:
+    dp.include_router(r)
 
+async def on_startup(bot):
+    await bot.set_webhook(f"{render_url}/webhook", secret_token=webhook)
 
-async def render_naebalovo():
-    app = web.Application()
-    app.router.add_get("/", lambda r: web.Response(text="ok"))
-    runner = web.AppRunner(app)
-    await runner.setup()
-    site = web.TCPSite(runner, "0.0.0.0", int(os.getenv("PORT", 10000)))
-    await site.start()
+app = web.Application()
+dp.startup.register(on_startup)
+SimpleRequestHandler(dispatcher=dp, bot=Bot, secret_token=webhook).register(app, path="/webhook")
+setup_application(app, dp, bot=Bot)
 
-async def main():
-    for r in routers:
-        dp.include_router(r)
-
-    print("Запуууупукпук")
-    await asyncio.gather(render_naebalovo(), dp.start_polling(Bot))
-
-asyncio.run(main())
+web.run_app(app, host="0.0.0.0", port=os.getenv("PORT"))
