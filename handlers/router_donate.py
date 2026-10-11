@@ -57,7 +57,7 @@ async def refund(message: Message, bot: Bot, command: CommandObject):
         )
     except Exception as e:
         print(e)
-        await message.answer("Произошла ошибка, может ты неправильно ввёл id доната.\nОшибка: {e}")
+        await message.answer(f"Произошла ошибка, может ты неправильно ввёл id доната.\nОшибка: {e}")
 
 @router_donate.message(F.successful_payment)
 async def refund_id(message: Message):
