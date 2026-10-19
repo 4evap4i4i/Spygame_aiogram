@@ -18,6 +18,6 @@ async def start(message: Message, state: FSMContext):
     elif message.chat.type == "group":
         await state.set_state(Game.started)
         try:
-            await message.answer_animation(caption="Привет, это бот для игры в шпиона!\n\nЧтобы начать игру - кто-нибудь должен прописать команду /play\n\nЧтобы отменить текущую игру - кто-нибудь должен прописать команду /cancel\n/help - для полного списка команд.", animation="https://c.tenor.com/ojjiAPMVYwMAAAAd/tenor.gif'")
+            await message.answer_animation(caption="Привет, это бот для игры в шпиона!\n\nЧтобы начать игру - кто-нибудь должен прописать команду /play\n\nЧтобы отменить текущую игру - кто-нибудь должен прописать команду /cancel\n/help - для полного списка команд.", animation="https://c.tenor.com/ojjiAPMVYwMAAAAd/tenor.gif")
         except Exception:
             await message.answer("Привет, это бот для игры в шпиона!\n\nЧтобы начать игру - кто-нибудь должен прописать команду /play\n\nЧтобы отменить текущую игру - кто-нибудь должен прописать команду /cancel\n/help - для полного списка команд.")

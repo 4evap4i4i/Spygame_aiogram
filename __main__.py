@@ -3,11 +3,12 @@ import os
 from aiogram import Dispatcher
 from aiogram.webhook.aiohttp_server import SimpleRequestHandler, setup_application
 from aiohttp import web
+from aiohttp.fsm_strategy import FSMStrategy
 
 from config import Bot, render_url, webhook
 from handlers import routers
 
-dp = Dispatcher()
+dp = Dispatcher(fsm_strategy=FSMStrategy.CHAT)
 for r in routers:
     dp.include_router(r)
 
